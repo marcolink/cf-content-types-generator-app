@@ -1,20 +1,20 @@
-import {AppExtensionSDK} from "@contentful/app-sdk";
+import {SpaceAPI} from "@contentful/app-sdk";
 import CFDefinitionsBuilder from "cf-content-types-generator/lib/cf-definitions-builder";
 import {Field} from "contentful";
-import {useEffect} from "react";
 import * as React from "react";
+import {useEffect, useState} from "react";
 
 type Props = {
-    sdk: AppExtensionSDK
+    api: SpaceAPI
 };
 
-const GeneratorView: React.FC<Props> = ({sdk}) => {
+const GeneratorView: React.FC<Props> = ({api}) => {
+
+    const [output, setOutput] = useState('')
 
     useEffect(() => {
-        const contentTypes = sdk.space.getCachedContentTypes();
-        console.log(contentTypes)
+        const contentTypes = api.getCachedContentTypes();
         const stringContent = new CFDefinitionsBuilder()
-        /*
         contentTypes.forEach(contentType => {
             stringContent.appendType({
                 id: contentType.sys.id,
@@ -23,14 +23,11 @@ const GeneratorView: React.FC<Props> = ({sdk}) => {
                 name: contentType.name
             })
         })
-         */
-    }, [sdk])
-
+        setOutput(stringContent.toString)
+    }, [api, setOutput])
 
     return (
-        <div>
-            Generator
-        </div>
+        <pre>{output}</pre>
     );
 };
 
