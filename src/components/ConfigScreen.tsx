@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { AppExtensionSDK } from '@contentful/app-sdk';
 import { Heading, Form, Workbench, Paragraph } from '@contentful/forma-36-react-components';
 import { css } from 'emotion';
+import GeneratorView from "../generator/GeneratorView";
 
 export interface AppInstallationParameters {}
 
@@ -60,6 +61,7 @@ export default class Config extends Component<ConfigProps, ConfigState> {
         <Form>
           <Heading>App Config</Heading>
           <Paragraph>Welcome to your contentful app. This is your config page.</Paragraph>
+            <GeneratorView sdk={this.props.sdk}/>
         </Form>
       </Workbench>
     );
