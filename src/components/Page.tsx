@@ -7,7 +7,8 @@ import {css} from "emotion";
 import {saveAs} from 'file-saver';
 import JSZip from 'jszip'
 import Prism from 'prismjs';
-import 'prismjs/themes/prism.css'
+// import 'prismjs/themes/prism.css'
+import 'prism-themes/themes/prism-vs.css'
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FileStore} from "../types";
 import FilesNavigation from "./generator/FilesNavigation";
@@ -145,6 +146,7 @@ const Page: React.FC<PageProps> = ({sdk}) => {
                     <Typography>
                         <Paragraph>
                             Use <a
+                            target={'_top'}
                             href={'https://github.com/contentful-labs/cf-content-types-generator'}>CLI</a> version to
                             integrate directly with your workflow.
                         </Paragraph>
