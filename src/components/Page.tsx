@@ -1,5 +1,5 @@
 import {PageExtensionSDK} from '@contentful/app-sdk';
-import {Button, Paragraph, Subheading, Typography, Workbench} from '@contentful/forma-36-react-components';
+import {Button, Paragraph, Typography, Workbench} from '@contentful/forma-36-react-components';
 import CFDefinitionsBuilder from "cf-content-types-generator/lib/cf-definitions-builder";
 import {Field} from "contentful";
 import {css} from "emotion";
@@ -9,6 +9,9 @@ import JSZip from 'jszip'
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css'
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {FileStore} from "../types";
+import FilesNavigation from "./generator/FilesNavigation";
+import SidebarSection from "./generator/SidebarSection";
 
 require('prismjs/components/prism-typescript');
 
@@ -37,13 +40,13 @@ const styles = {
     })
 }
 
-
 interface PageProps {
     sdk: PageExtensionSDK;
 }
 
 const Page: React.FC<PageProps> = ({sdk}) => {
     const [output, setOutput] = useState('')
+    const [files, setFiles] = useState<FileStore>({})
 
     const api = sdk.space;
 
@@ -61,12 +64,27 @@ const Page: React.FC<PageProps> = ({sdk}) => {
         return builder;
     }, [api])
 
+    useEffect(() => {
+        const data: FileStore = {};
+        const writer = async (dir: string, content: string): Promise<void> => {
+            data[dir.substring(1)] = content;
+            return Promise.resolve()
+        }
+        // setOutput(builder.toString())
+        builder.write('', writer).then(() => setFiles(data));
+    }, [builder, setFiles, setOutput])
+
+    useEffect(() => {
+        Prism.highlightAll();
+    })
+
     const createZip = useCallback(async () => {
         const zip = new JSZip();
-        const writer = async (dir: string, content: string) => {
-            zip.file(dir, content);
+
+        for (let fileName in files) {
+            zip.file(fileName, files[fileName]);
         }
-        await builder.write('', writer);
+
         const zipContent = await zip.generateAsync({type: "blob"})
         saveAs(zipContent, "types.zip")
     }, [builder])
@@ -76,14 +94,7 @@ const Page: React.FC<PageProps> = ({sdk}) => {
         saveAs(file, "types.ts")
     }, [output])
 
-
-    useEffect(() => {
-        setOutput(builder.toString())
-    }, [api, setOutput])
-
-    useEffect(() => {
-        Prism.highlightAll();
-    })
+    const selectFile = (fileName: string) => setOutput(files[fileName])
 
     return (
         <Workbench>
@@ -95,42 +106,53 @@ const Page: React.FC<PageProps> = ({sdk}) => {
                 <pre><code className={'lang-typescript'}>{output}</code></pre>
             </Workbench.Content>
             <Workbench.Sidebar position="right">
-                <Subheading className={styles.sidebarHeadline}>Downloads</Subheading>
-                <Button
-                    icon="Folder"
-                    className={styles.downloadButton}
-                    onClick={createZip}
-                    isFullWidth
-                >
-                    Download zip
-                </Button>
-                <Typography>
-                    <Paragraph>
-                        Download a zip file including separate files for each content type.
-                    </Paragraph>
-                </Typography>
 
-                <Button
-                    icon="Download"
-                    className={styles.downloadButton}
-                    onClick={createFile}
-                    isFullWidth
-                >
-                    Download file
-                </Button>
-                <Typography>
-                    <Paragraph>
-                        Download a single file with all types combined.
-                    </Paragraph>
-                </Typography>
+                <SidebarSection title={'Files'}>
+                    <FilesNavigation files={Object.keys(files)} onSelect={selectFile}/>
+                </SidebarSection>
 
-                <Subheading className={styles.sidebarHeadline}>Project Info</Subheading>
-                <Typography>
-                    <Paragraph>
-                        Version {require('../../package.json').version}
-                    </Paragraph>
-                </Typography>
+                <SidebarSection title={'Downloads'}>
+                    <Button
+                        icon="Folder"
+                        className={styles.downloadButton}
+                        onClick={createZip}
+                        isFullWidth
+                    >
+                        Download zip
+                    </Button>
+                    <Typography>
+                        <Paragraph>
+                            Download a zip file including separate files for each content type.
+                        </Paragraph>
+                    </Typography>
 
+                    <Button
+                        icon="Download"
+                        className={styles.downloadButton}
+                        onClick={createFile}
+                        isFullWidth
+                    >
+                        Download file
+                    </Button>
+                    <Typography>
+                        <Paragraph>
+                            Download a single file with all types combined.
+                        </Paragraph>
+                    </Typography>
+                </SidebarSection>
+
+                <SidebarSection title={'Project Info'}>
+                    <Typography>
+                        <Paragraph>
+                            Use <a
+                            href={'https://github.com/contentful-labs/cf-content-types-generator'}>CLI</a> version to
+                            integrate directly with your workflow.
+                        </Paragraph>
+                        <Paragraph>
+                            Version <code>{require('../../package.json').version}</code>
+                        </Paragraph>
+                    </Typography>
+                </SidebarSection>
 
             </Workbench.Sidebar>
         </Workbench>
