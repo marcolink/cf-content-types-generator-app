@@ -53,7 +53,7 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = ({sdk}) => {
     const [output, setOutput] = useState('')
-    const [selectedFile, setSelectedFile] = useState<string | undefined>()
+    const [selectedFile, setSelectedFile] = useState<string | undefined>(SINGLE_FILE_NAME)
 
     const files = useMultiFileContent(sdk.space)
     const singleFileContent = useSingleFileContent(sdk.space)
