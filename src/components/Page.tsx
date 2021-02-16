@@ -1,7 +1,5 @@
 import {PageExtensionSDK} from '@contentful/app-sdk';
 import {Button, CopyButton, Paragraph, Typography, Workbench} from '@contentful/forma-36-react-components';
-import CFDefinitionsBuilder from "cf-content-types-generator/lib/cf-definitions-builder";
-import {Field} from "contentful";
 import {css} from "emotion";
 
 import {saveAs} from 'file-saver';
@@ -9,10 +7,11 @@ import JSZip from 'jszip'
 // import 'prismjs/themes/prism.css'
 import 'prism-themes/themes/prism-vs.css'
 import Prism from 'prismjs';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {FileStore} from "../types";
+import React, {useCallback, useEffect, useState} from 'react';
 import FilesNavigation from "./generator/FilesNavigation";
 import SidebarSection from "./generator/SidebarSection";
+import {useMultiFileContent} from "./generator/useMulitFileContent";
+import {useSingleFileContent} from "./generator/useSingleFileContent";
 
 require('prismjs/components/prism-typescript');
 
@@ -46,33 +45,24 @@ const styles = {
     })
 }
 
+const SINGLE_FILE_NAME = 'content-types.ts';
+
 interface PageProps {
     sdk: PageExtensionSDK;
 }
 
 const Page: React.FC<PageProps> = ({sdk}) => {
     const [output, setOutput] = useState('')
-    const [files, setFiles] = useState<FileStore>({})
     const [selectedFile, setSelectedFile] = useState<string | undefined>()
 
-    const api = sdk.space;
+    const files = useMultiFileContent(sdk.space)
+    const singleFileContent = useSingleFileContent(sdk.space)
 
-    const builder = useMemo(() => {
-        const contentTypes = api.getCachedContentTypes();
-        const builder = new CFDefinitionsBuilder()
-        contentTypes.forEach(contentType => {
-            builder.appendType({
-                id: contentType.sys.id,
-                sys: contentType.sys,
-                fields: (contentType.fields as Field[]),
-                name: contentType.name
-            })
-        })
-        return builder;
-    }, [api])
-
+    // navigate
     useEffect(() => {
-        if (selectedFile && files[selectedFile]) {
+        if (selectedFile === SINGLE_FILE_NAME) {
+            setOutput(singleFileContent)
+        } else if (selectedFile && files[selectedFile]) {
             setOutput(files[selectedFile])
         } else {
             setOutput('')
@@ -80,33 +70,21 @@ const Page: React.FC<PageProps> = ({sdk}) => {
     }, [setOutput, selectedFile])
 
     useEffect(() => {
-        const data: FileStore = {};
-        const writer = async (dir: string, content: string): Promise<void> => {
-            data[dir.substring(1)] = content;
-            return Promise.resolve()
-        }
-        // setOutput(builder.toString())
-        builder.write('', writer).then(() => setFiles(data));
-    }, [builder, setFiles, setOutput])
-
-    useEffect(() => {
         Prism.highlightAll();
     })
 
     const createZip = useCallback(async () => {
         const zip = new JSZip();
-
         for (let fileName in files) {
             zip.file(fileName, files[fileName]);
         }
-
         const zipContent = await zip.generateAsync({type: "blob"})
-        saveAs(zipContent, "types.zip")
-    }, [builder])
+        saveAs(zipContent, "content-types.zip")
+    }, [files])
 
     const createFile = useCallback(async () => {
-        const file = new Blob([output], {type: "text/plain;charset=utf-8"})
-        saveAs(file, "types.ts")
+        const content = new Blob([singleFileContent], {type: "text/plain;charset=utf-8"})
+        saveAs(content, SINGLE_FILE_NAME)
     }, [output])
 
     return (
@@ -116,13 +94,18 @@ const Page: React.FC<PageProps> = ({sdk}) => {
                 description={'Generate TS types based on content types'}
             />
             <Workbench.Content type={"full"}>
-                <CopyButton className={styles.copyButton} copyValue={output}  />
+                <CopyButton className={styles.copyButton} copyValue={output}/>
                 <pre><code className={'lang-typescript'}>{output}</code></pre>
             </Workbench.Content>
             <Workbench.Sidebar position="right">
 
+                <SidebarSection title={'single File'}>
+                    <FilesNavigation selected={selectedFile} files={[SINGLE_FILE_NAME]}
+                                     onSelect={setSelectedFile}/>
+                </SidebarSection>
                 <SidebarSection title={'Files'}>
-                    <FilesNavigation selected={selectedFile} files={Object.keys(files)} onSelect={setSelectedFile}/>
+                    <FilesNavigation selected={selectedFile} files={Object.keys(files)}
+                                     onSelect={setSelectedFile}/>
                 </SidebarSection>
 
                 <SidebarSection title={'Downloads'}>
