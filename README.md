@@ -1,8 +1,6 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/72588f58-5794-440a-a519-705ea7b91770/deploy-status)](https://app.netlify.com/sites/cf-content-types-generator-app/deploys)
 # TS Content Typs Generator App
-
 > A [Contentful App](https://www.contentful.com/developers/docs/extensibility/app-framework/) to generate typescript types based on contentful's content types.
-
-
 
 
 
