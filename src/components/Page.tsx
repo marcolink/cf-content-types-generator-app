@@ -1,14 +1,14 @@
 import {PageExtensionSDK} from '@contentful/app-sdk';
-import {Button, Paragraph, Typography, Workbench} from '@contentful/forma-36-react-components';
+import {Button, CopyButton, Paragraph, Typography, Workbench} from '@contentful/forma-36-react-components';
 import CFDefinitionsBuilder from "cf-content-types-generator/lib/cf-definitions-builder";
 import {Field} from "contentful";
 import {css} from "emotion";
 
 import {saveAs} from 'file-saver';
 import JSZip from 'jszip'
-import Prism from 'prismjs';
 // import 'prismjs/themes/prism.css'
 import 'prism-themes/themes/prism-vs.css'
+import Prism from 'prismjs';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FileStore} from "../types";
 import FilesNavigation from "./generator/FilesNavigation";
@@ -38,6 +38,11 @@ const styles = {
 
     downloadButton: css({
         marginBottom: '8px'
+    }),
+    copyButton: css({
+        float: 'right',
+        marginBottom: '-20px',
+        marginLeft: '-1px'
     })
 }
 
@@ -48,6 +53,7 @@ interface PageProps {
 const Page: React.FC<PageProps> = ({sdk}) => {
     const [output, setOutput] = useState('')
     const [files, setFiles] = useState<FileStore>({})
+    const [selectedFile, setSelectedFile] = useState<string | undefined>()
 
     const api = sdk.space;
 
@@ -64,6 +70,14 @@ const Page: React.FC<PageProps> = ({sdk}) => {
         })
         return builder;
     }, [api])
+
+    useEffect(() => {
+        if (selectedFile && files[selectedFile]) {
+            setOutput(files[selectedFile])
+        } else {
+            setOutput('')
+        }
+    }, [setOutput, selectedFile])
 
     useEffect(() => {
         const data: FileStore = {};
@@ -95,8 +109,6 @@ const Page: React.FC<PageProps> = ({sdk}) => {
         saveAs(file, "types.ts")
     }, [output])
 
-    const selectFile = (fileName: string) => setOutput(files[fileName])
-
     return (
         <Workbench>
             <Workbench.Header
@@ -104,12 +116,13 @@ const Page: React.FC<PageProps> = ({sdk}) => {
                 description={'Generate TS types based on content types'}
             />
             <Workbench.Content type={"full"}>
+                <CopyButton className={styles.copyButton} copyValue={output}  />
                 <pre><code className={'lang-typescript'}>{output}</code></pre>
             </Workbench.Content>
             <Workbench.Sidebar position="right">
 
                 <SidebarSection title={'Files'}>
-                    <FilesNavigation files={Object.keys(files)} onSelect={selectFile}/>
+                    <FilesNavigation selected={selectedFile} files={Object.keys(files)} onSelect={setSelectedFile}/>
                 </SidebarSection>
 
                 <SidebarSection title={'Downloads'}>

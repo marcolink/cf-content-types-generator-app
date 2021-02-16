@@ -12,12 +12,14 @@ const styles = {
 type Props = {
     file: string
     onSelect: (file: string) => void;
+    selected: boolean;
 };
 
-const FileNavigationItem: React.FC<Props> = ({file, onSelect}) => {
+const FileNavigationItem: React.FC<Props> = ({file, onSelect, selected}) => {
     return (
         <div>
-            <TextLink className={styles.link} onClick={() => onSelect(file)}>{file}</TextLink>
+            <TextLink linkType={selected ? "positive" : 'primary'} className={styles.link}
+                      onClick={() => onSelect(file)}>{file}</TextLink>
         </div>
     );
 };
