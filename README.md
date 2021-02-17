@@ -2,11 +2,12 @@
 # TS Content Typs Generator App
 > A [Contentful App](https://www.contentful.com/developers/docs/extensibility/app-framework/) to generate typescript types based on contentful's content types.
 
-
-
-
-
 This project was bootstrapped with [Create Contentful App](https://github.com/contentful/create-contentful-app).
+
+![Screenshot of Typescript types generator inside of the Contentful UI](./screenshot.png)
+
+Deployed to [https://cf-content-types-generator-app.netlify.app](https://cf-content-types-generator-app.netlify.app/)
+
 
 ## Available Scripts
 
