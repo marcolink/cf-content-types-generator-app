@@ -1,8 +1,9 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/72588f58-5794-440a-a519-705ea7b91770/deploy-status)](https://app.netlify.com/sites/cf-content-types-generator-app/deploys)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 
 # TS Content Types Generator App
 
-> A [Contentful App](https://www.contentful.com/developers/docs/extensibility/app-framework/) to generate typescript types based on contentful's content types.
+> A [Contentful App](https://www.contentful.com/developers/docs/extensibility/app-framework/) to generate typescript types based on contentful's content types. It utilizes the [cf-content-types-generator](https://github.com/contentful-labs/cf-content-types-generator) CLI.
 
 ![Screenshot of Typescript types generator inside of the Contentful UI](./screenshot.png)
 
