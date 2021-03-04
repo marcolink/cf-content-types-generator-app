@@ -5,7 +5,7 @@
   "dependencies": {
     "@contentful/app-sdk": "^3.32.0",
     "@contentful/field-editor-single-line": "^0.13.2",
-    "@contentful/field-editor-test-utils": "^0.9.0",
+    "@contentful/field-editor-test-utils": "^0.11.0",
     "@contentful/forma-36-fcss": "^0.3.1",
     "@contentful/forma-36-react-components": "^3.79.2",
     "@contentful/forma-36-tokens": "^0.10.1",
