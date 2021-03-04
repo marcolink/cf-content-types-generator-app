@@ -1,10 +1,8 @@
-import {SpaceAPI} from "@contentful/app-sdk/dist/types";
+import CFDefinitionsBuilder from "cf-content-types-generator/lib/cf-definitions-builder";
 import {useEffect, useState} from "react";
 import {FileStore} from "../../types";
-import {useBuilder} from "./useBuilder";
 
-export const useMultiFileContent = (api: SpaceAPI) => {
-    const builder = useBuilder(api);
+export const useMultiFileContent = (builder: CFDefinitionsBuilder) => {
     const [files, setFiles] = useState<FileStore>({})
     useEffect(() => {
         const data: FileStore = {};

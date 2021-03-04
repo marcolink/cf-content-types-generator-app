@@ -10,6 +10,7 @@ import Prism from 'prismjs';
 import React, {useCallback, useEffect, useState} from 'react';
 import FilesNavigation from "./generator/FilesNavigation";
 import SidebarSection from "./generator/SidebarSection";
+import {useBuilder} from "./generator/useBuilder";
 import {useMultiFileContent} from "./generator/useMulitFileContent";
 import {useSingleFileContent} from "./generator/useSingleFileContent";
 
@@ -55,8 +56,9 @@ const Page: React.FC<PageProps> = ({sdk}) => {
     const [output, setOutput] = useState('')
     const [selectedFile, setSelectedFile] = useState<string | undefined>(SINGLE_FILE_NAME)
 
-    const files = useMultiFileContent(sdk.space)
-    const singleFileContent = useSingleFileContent(sdk.space)
+    const builder = useBuilder(sdk.space)
+    const files = useMultiFileContent(builder)
+    const singleFileContent = useSingleFileContent(builder)
 
     // navigate
     useEffect(() => {

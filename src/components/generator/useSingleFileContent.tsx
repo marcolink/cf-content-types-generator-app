@@ -1,8 +1,6 @@
-import {SpaceAPI} from "@contentful/app-sdk/dist/types";
+import CFDefinitionsBuilder from "cf-content-types-generator/lib/cf-definitions-builder";
 import {useMemo} from "react";
-import {useBuilder} from "./useBuilder";
 
-export const useSingleFileContent = (api: SpaceAPI) => {
-    const builder = useBuilder(api);
+export const useSingleFileContent = (builder: CFDefinitionsBuilder) => {
     return useMemo(() => builder.toString(), [builder])
 }

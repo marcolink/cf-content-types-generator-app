@@ -1,6 +1,6 @@
 {
   "name": "cf-content-types-generator-app",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "dependencies": {
     "@contentful/app-sdk": "^3.32.0",
@@ -12,7 +12,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.1",
-    "cf-content-types-generator": "v1.5.1",
+    "cf-content-types-generator": "^1.5.2",
     "cross-env": "^7.0.3",
     "file-saver": "^2.0.5",
     "jszip": "^3.6.0",
