@@ -1,5 +1,5 @@
 import {AppExtensionSDK} from '@contentful/app-sdk';
-import {Form, Heading, Paragraph, Workbench} from '@contentful/forma-36-react-components';
+import {Form, Paragraph, Workbench} from '@contentful/forma-36-react-components';
 import {css} from 'emotion';
 import React, {Component} from 'react';
 

@@ -1,12 +1,25 @@
 import {SpaceAPI} from "@contentful/app-sdk/dist/types";
 import CFDefinitionsBuilder from "cf-content-types-generator/lib/cf-definitions-builder";
+import {
+    ContentTypeRenderer,
+    DefaultContentTypeRenderer,
+    LocalizedContentTypeRenderer
+} from "cf-content-types-generator/lib/renderer/type";
 import {Field} from "contentful";
 import {useMemo} from "react";
 
-export const useBuilder = (api: SpaceAPI) => {
+export type Flag = 'localized'
+
+export const useBuilder = (api: SpaceAPI, flags:Flag[] = []) => {
     return useMemo(() => {
         const contentTypes = api.getCachedContentTypes();
-        const builder = new CFDefinitionsBuilder()
+
+        const renderers: ContentTypeRenderer[] = [new DefaultContentTypeRenderer()];
+        if (flags.includes('localized')) {
+            renderers.push(new LocalizedContentTypeRenderer());
+        }
+
+        const builder = new CFDefinitionsBuilder(renderers)
         contentTypes.forEach(contentType => {
             builder.appendType({
                 id: contentType.sys.id,
@@ -16,5 +29,5 @@ export const useBuilder = (api: SpaceAPI) => {
             })
         })
         return builder;
-    }, [api])
+    }, [api, flags])
 }
