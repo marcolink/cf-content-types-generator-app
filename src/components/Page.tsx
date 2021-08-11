@@ -9,8 +9,9 @@ import 'prism-themes/themes/prism-vs.css'
 import Prism from 'prismjs';
 import React, {useCallback, useEffect, useState} from 'react';
 import FilesNavigation from "./generator/FilesNavigation";
+import FlagsConfiguration from "./generator/FlagsConfiguration";
 import SidebarSection from "./generator/SidebarSection";
-import {useBuilder} from "./generator/useBuilder";
+import {Flag, useBuilder} from "./generator/useBuilder";
 import {useMultiFileContent} from "./generator/useMulitFileContent";
 import {useSingleFileContent} from "./generator/useSingleFileContent";
 
@@ -55,8 +56,9 @@ interface PageProps {
 const Page: React.FC<PageProps> = ({sdk}) => {
     const [output, setOutput] = useState('')
     const [selectedFile, setSelectedFile] = useState<string | undefined>(SINGLE_FILE_NAME)
+    const [flags, setFlags] = useState<Flag[]>([]);
 
-    const builder = useBuilder(sdk.space)
+    const builder = useBuilder(sdk.space, flags)
     const files = useMultiFileContent(builder)
     const singleFileContent = useSingleFileContent(builder)
 
@@ -69,7 +71,7 @@ const Page: React.FC<PageProps> = ({sdk}) => {
         } else {
             setOutput('')
         }
-    }, [setOutput, selectedFile])
+    }, [setOutput, selectedFile, files, singleFileContent])
 
     useEffect(() => {
         Prism.highlightAll();
@@ -87,7 +89,7 @@ const Page: React.FC<PageProps> = ({sdk}) => {
     const createFile = useCallback(async () => {
         const content = new Blob([singleFileContent], {type: "text/plain;charset=utf-8"})
         saveAs(content, SINGLE_FILE_NAME)
-    }, [output])
+    }, [singleFileContent])
 
     return (
         <Workbench>
@@ -100,6 +102,10 @@ const Page: React.FC<PageProps> = ({sdk}) => {
                 <pre><code className={'lang-typescript'}>{output}</code></pre>
             </Workbench.Content>
             <Workbench.Sidebar position="right">
+
+                <SidebarSection title={'Config'} isNew={true}>
+                    <FlagsConfiguration onSelect={setFlags} selected={flags} />
+                </SidebarSection>
 
                 <SidebarSection title={'single File'}>
                     <FilesNavigation selected={selectedFile} files={[SINGLE_FILE_NAME]}
