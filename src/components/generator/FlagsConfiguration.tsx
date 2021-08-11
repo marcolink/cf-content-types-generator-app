@@ -21,9 +21,19 @@ const useFlagsToggle = (flag: Flag, selected: Flag[], onSelect: (flags: Flag[]) 
 
 const FlagsConfiguration: React.FC<Props> = ({onSelect, selected}) => {
     const toggleLocalized = useFlagsToggle('localized', [...selected], onSelect);
+    const toggleAnnotated = useFlagsToggle('annotated', [...selected], onSelect);
     return (
         <div>
             <FieldGroup>
+                <CheckboxField
+                    labelText="Annotated (JSDoc)"
+                    helpText="Annotate types with additional information"
+                    name="annotated"
+                    onChange={toggleAnnotated}
+                    checked={selected.includes('annotated')}
+                    value={'checked'}
+                    id="annotated"
+                />
                 <CheckboxField
                     labelText="Localized"
                     helpText="Add types for localized fields and entries"
