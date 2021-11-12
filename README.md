@@ -9,6 +9,10 @@
 
 This project was bootstrapped with [Create Contentful App](https://github.com/contentful/create-contentful-app), and deployed to [https://cf-content-types-generator-app.netlify.app](https://cf-content-types-generator-app.netlify.app/)
 
+## 1 click installation
+
+[![Install to Contentful](https://www.ctfstatic.com/button/install-small.svg)](https://app.contentful.com/deeplink?link=apps&id=2MXG5AIr2DtUvjAAmM7LV3)
+
 ## Setup
 
 [The Contentful App Framework](https://www.contentful.com/developers/docs/extensibility/app-framework/) allows developers to extend the Contentful UI with custom functionality. You can install the app and use its hosted version without editing any code.
