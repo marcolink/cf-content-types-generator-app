@@ -22,7 +22,6 @@ export const useBuilder = (api: SpaceAPI, flags:Flag[] = []) => {
         const builder = new CFDefinitionsBuilder(renderers)
         contentTypes.forEach(contentType => {
             builder.appendType({
-                id: contentType.sys.id,
                 sys: contentType.sys,
                 fields: (contentType.fields as Field[]),
                 name: contentType.name
