@@ -15,7 +15,7 @@ export class AnnotatedTypeRenderer extends BaseContentTypeRenderer {
     public render = (contentType: CFContentType, file) => {
 
         file.insertStatements(0, stripIndent(`            /*
-             * Types for "${contentType.name}" (id:${contentType.id}) 
+             * Types for "${contentType.name}" (id:${contentType.sys.id}) 
              * Created at ${this.timestamp} 
              */
         `));
