@@ -1,13 +1,13 @@
+import {DialogExtensionSDK} from '@contentful/app-sdk';
+import {Paragraph} from '@contentful/f36-components';
 import React from 'react';
-import { Paragraph } from '@contentful/forma-36-react-components';
-import { DialogExtensionSDK } from '@contentful/app-sdk';
 
 interface DialogProps {
-  sdk: DialogExtensionSDK;
+    sdk: DialogExtensionSDK;
 }
 
 const Dialog = (props: DialogProps) => {
-  return <Paragraph>Hello Dialog Component</Paragraph>;
+    return <Paragraph>Hello Dialog Component</Paragraph>;
 };
 
 export default Dialog;

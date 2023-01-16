@@ -1,4 +1,4 @@
-import {Subheading, Tag} from "@contentful/forma-36-react-components";
+import {Subheading} from "@contentful/f36-components";
 import {css} from "emotion";
 import * as React from "react";
 import {PropsWithChildren} from "react";
@@ -32,8 +32,7 @@ type Props = PropsWithChildren<{
 const SidebarSection: React.FC<Props> = ({title, isNew, children}) => {
     return (
         <>
-            <Subheading className={styles.sidebarHeadline}>{title} {isNew &&
-            <Tag size={"small"} tagType={"primary-filled"}>new</Tag>}</Subheading>
+            <Subheading className={styles.sidebarHeadline}>{title} </Subheading>
             <div>{children}</div>
         </>
     );
