@@ -1,6 +1,6 @@
-import {CheckboxField, FieldGroup} from "@contentful/forma-36-react-components";
-import * as React from "react";
+import {Checkbox} from "@contentful/f36-components";
 import {pullAt} from "lodash";
+import * as React from "react";
 import {Flag} from "./useBuilder";
 
 type Props = {
@@ -23,17 +23,15 @@ const FlagsConfiguration: React.FC<Props> = ({onSelect, selected}) => {
     const toggleLocalized = useFlagsToggle('localized', [...selected], onSelect);
     return (
         <div>
-            <FieldGroup>
-                <CheckboxField
-                    labelText="Localized"
-                    helpText="Add types for localized fields and entries"
-                    name="localized"
-                    onChange={toggleLocalized}
-                    checked={selected.includes('localized')}
-                    value={'checked'}
-                    id="localized"
-                />
-            </FieldGroup>
+            <Checkbox
+                title="Localized"
+                helpText="Add types for localized fields and entries"
+                name="localized"
+                onChange={toggleLocalized}
+                isChecked={selected.includes('localized')}
+                value={'checked'}
+                id="localized"
+            >Localized</Checkbox>
         </div>
     );
 };

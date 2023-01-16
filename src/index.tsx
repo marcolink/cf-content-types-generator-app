@@ -11,10 +11,6 @@ import {
   init,
   locations,
 } from '@contentful/app-sdk';
-import '@contentful/forma-36-react-components/dist/styles.css';
-import '@contentful/forma-36-fcss/dist/styles.css';
-import '@contentful/forma-36-tokens/dist/css/index.css';
-import './index.css';
 
 import Config from './components/ConfigScreen';
 import EntryEditor from './components/EntryEditor';

@@ -1,5 +1,6 @@
 import {AppExtensionSDK} from '@contentful/app-sdk';
-import {Form, Paragraph, Workbench} from '@contentful/forma-36-react-components';
+import {Form, Paragraph} from '@contentful/f36-components';
+import {Workbench} from '@contentful/f36-workbench';
 import {css} from 'emotion';
 import React, {Component} from 'react';
 
@@ -59,7 +60,6 @@ export default class Config extends Component<ConfigProps, ConfigState> {
         return (
             <Workbench className={css({margin: '80px'})}>
                 <Workbench.Header title={'Typescript - Content Types'}/>
-
                 <Form>
                     <Paragraph>Welcome to your contentful app. This is your config page.</Paragraph>
                 </Form>

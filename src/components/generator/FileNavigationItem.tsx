@@ -1,5 +1,5 @@
-import {TextLink} from "@contentful/forma-36-react-components";
-import tokens from "@contentful/forma-36-tokens";
+import { TextLink } from "@contentful/f36-components";
+import tokens from "@contentful/f36-tokens";
 import {css} from "emotion";
 import * as React from "react";
 
@@ -18,7 +18,7 @@ type Props = {
 const FileNavigationItem: React.FC<Props> = ({file, onSelect, selected}) => {
     return (
         <div>
-            <TextLink linkType={selected ? "positive" : 'primary'} className={styles.link}
+            <TextLink variant={selected ? "positive" : 'primary'} className={styles.link}
                       onClick={() => onSelect(file)}>{file}</TextLink>
         </div>
     );

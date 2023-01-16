@@ -1,5 +1,8 @@
 import {PageExtensionSDK} from '@contentful/app-sdk';
-import {Button, CopyButton, Paragraph, Typography, Workbench} from '@contentful/forma-36-react-components';
+import {CopyButton, GlobalStyles, IconButton, Paragraph, Typography} from '@contentful/f36-components';
+import {DownloadIcon} from "@contentful/f36-icons";
+import {Workbench} from '@contentful/f36-workbench';
+
 import {css} from "emotion";
 
 import {saveAs} from 'file-saver';
@@ -92,76 +95,84 @@ const Page: React.FC<PageProps> = ({sdk}) => {
     }, [singleFileContent])
 
     return (
-        <Workbench>
-            <Workbench.Header
-                title={'Typescript - Content Types'}
-                description={'Generate TS types based on content types'}
-            />
-            <Workbench.Content type={"full"}>
-                <CopyButton className={styles.copyButton} copyValue={output}/>
-                <pre><code className={'lang-typescript'}>{output}</code></pre>
-            </Workbench.Content>
-            <Workbench.Sidebar position="right">
+        <>
+            <GlobalStyles/>
+            <Workbench>
+                <Workbench.Header
+                    title={'Typescript - Content Types'}
+                    description={'Generate TS types based on content types'}
+                />
+                <Workbench.Content type={"full"}>
+                    <CopyButton className={styles.copyButton} value={output}/>
+                    <pre><code className={'lang-typescript'}>{output}</code></pre>
+                </Workbench.Content>
+                <Workbench.Sidebar position="right">
 
-                <SidebarSection title={'Config'} isNew={true}>
-                    <FlagsConfiguration onSelect={setFlags} selected={flags} />
-                </SidebarSection>
+                    <SidebarSection title={'Config'} isNew={true}>
+                        <FlagsConfiguration onSelect={setFlags} selected={flags}/>
+                    </SidebarSection>
 
-                <SidebarSection title={'single File'}>
-                    <FilesNavigation selected={selectedFile} files={[SINGLE_FILE_NAME]}
-                                     onSelect={setSelectedFile}/>
-                </SidebarSection>
-                <SidebarSection title={'Files'}>
-                    <FilesNavigation selected={selectedFile} files={Object.keys(files)}
-                                     onSelect={setSelectedFile}/>
-                </SidebarSection>
+                    <SidebarSection title={'single File'}>
+                        <FilesNavigation selected={selectedFile} files={[SINGLE_FILE_NAME]}
+                                         onSelect={setSelectedFile}/>
+                    </SidebarSection>
+                    <SidebarSection title={'Files'}>
+                        <FilesNavigation selected={selectedFile} files={Object.keys(files)}
+                                         onSelect={setSelectedFile}/>
+                    </SidebarSection>
 
-                <SidebarSection title={'Downloads'}>
-                    <Button
-                        icon="Folder"
-                        className={styles.downloadButton}
-                        onClick={createZip}
-                        isFullWidth
-                    >
-                        Download zip
-                    </Button>
-                    <Typography>
-                        <Paragraph>
-                            Download a zip file including separate files for each content type.
-                        </Paragraph>
-                    </Typography>
+                    <SidebarSection title={'Downloads'}>
+                        <IconButton
+                            aria-label={"Download"}
+                            variant={'primary'}
+                            icon={<DownloadIcon/>}
+                            className={styles.downloadButton}
+                            onClick={createZip}
+                            isFullWidth
+                        >
+                            Download zip
+                        </IconButton>
+                        <Typography>
+                            <Paragraph>
+                                Download a zip file including separate files for each content type.
+                            </Paragraph>
+                        </Typography>
 
-                    <Button
-                        icon="Download"
-                        className={styles.downloadButton}
-                        onClick={createFile}
-                        isFullWidth
-                    >
-                        Download file
-                    </Button>
-                    <Typography>
-                        <Paragraph>
-                            Download a single file with all types combined.
-                        </Paragraph>
-                    </Typography>
-                </SidebarSection>
+                        <IconButton
+                            aria-label={"Download"}
+                            variant={'primary'}
+                            icon={<DownloadIcon/>}
+                            className={styles.downloadButton}
+                            onClick={createFile}
+                            isFullWidth
+                        >
+                            Download file
+                        </IconButton>
+                        <Typography>
+                            <Paragraph>
+                                Download a single file with all types combined.
+                            </Paragraph>
+                        </Typography>
+                    </SidebarSection>
 
-                <SidebarSection title={'Project Info'}>
-                    <Typography>
-                        <Paragraph>
-                            Use <a
-                            target={'_top'}
-                            href={'https://github.com/contentful-labs/cf-content-types-generator'}>CLI</a> version to
-                            integrate directly with your workflow.
-                        </Paragraph>
-                        <Paragraph>
-                            Version <code>{require('../../package.json').version}</code>
-                        </Paragraph>
-                    </Typography>
-                </SidebarSection>
+                    <SidebarSection title={'Project Info'}>
+                        <Typography>
+                            <Paragraph>
+                                Use <a
+                                target={'_top'}
+                                href={'https://github.com/contentful-labs/cf-content-types-generator'}>CLI</a> version
+                                to
+                                integrate directly with your workflow.
+                            </Paragraph>
+                            <Paragraph>
+                                Version <code>{require('../../package.json').version}</code>
+                            </Paragraph>
+                        </Typography>
+                    </SidebarSection>
 
-            </Workbench.Sidebar>
-        </Workbench>
+                </Workbench.Sidebar>
+            </Workbench>
+        </>
     );
 };
 
