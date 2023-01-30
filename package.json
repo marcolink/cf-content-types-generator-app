@@ -11,7 +11,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^13.2.1",
-    "cf-content-types-generator": "^2.4.2",
+    "cf-content-types-generator": "^2.5.0",
     "cross-env": "^7.0.3",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
