@@ -1,5 +1,5 @@
 import {SpaceAPI} from "@contentful/app-sdk/dist/types";
-import CFDefinitionsBuilder from "cf-content-types-generator/lib/cf-definitions-builder";
+import CFDefinitionsBuilder from "cf-content-types-generator";
 import {
     ContentTypeRenderer,
     DefaultContentTypeRenderer,
@@ -10,7 +10,7 @@ import {useMemo} from "react";
 
 export type Flag = 'localized'
 
-export const useBuilder = (api: SpaceAPI, flags:Flag[] = []) => {
+export const useBuilder = (api: SpaceAPI, flags: Flag[] = []) => {
     return useMemo(() => {
         const contentTypes = api.getCachedContentTypes();
 
