@@ -1,32 +1,36 @@
-import {SpaceAPI} from "@contentful/app-sdk/dist/types";
-import CFDefinitionsBuilder from "cf-content-types-generator";
+import {ContentType} from "@contentful/app-sdk";
 import {
+    CFDefinitionsBuilder,
     ContentTypeRenderer,
     DefaultContentTypeRenderer,
     LocalizedContentTypeRenderer
-} from "cf-content-types-generator/lib/renderer/type";
-import {Field} from "contentful";
+} from "cf-content-types-generator";
+import {UserProps} from "contentful-management/dist/typings/entities/user";
 import {useMemo} from "react";
+import {useJsDocRenderer} from "./useJsDocRenderer";
 
-export type Flag = 'localized'
+export type Flag = 'localized' | 'jsdoc'
 
-export const useBuilder = (api: SpaceAPI, flags: Flag[] = []) => {
+type UseBuilderProps = {
+    contentTypes: ContentType[]
+    flags: Flag[]
+    users: UserProps[]
+}
+
+export const useBuilder = ({contentTypes = [], flags = [], users = []}: UseBuilderProps) => {
+    const jsDocRenderer = useJsDocRenderer({users})
+
     return useMemo(() => {
-        const contentTypes = api.getCachedContentTypes();
-
         const renderers: ContentTypeRenderer[] = [new DefaultContentTypeRenderer()];
         if (flags.includes('localized')) {
             renderers.push(new LocalizedContentTypeRenderer());
         }
-
+        if (flags.includes('jsdoc')) {
+            renderers.push(jsDocRenderer);
+        }
         const builder = new CFDefinitionsBuilder(renderers)
-        contentTypes.forEach(contentType => {
-            builder.appendType({
-                sys: contentType.sys,
-                fields: (contentType.fields as Field[]),
-                name: contentType.name
-            })
-        })
+        // @ts-ignore
+        builder.appendTypes(contentTypes)
         return builder;
-    }, [api, flags])
+    }, [contentTypes, users, flags, jsDocRenderer])
 }

@@ -21,11 +21,21 @@ const useFlagsToggle = (flag: Flag, selected: Flag[], onSelect: (flags: Flag[]) 
 
 const FlagsConfiguration: React.FC<Props> = ({onSelect, selected}) => {
     const toggleLocalized = useFlagsToggle('localized', [...selected], onSelect);
+    const toggleJSDoc = useFlagsToggle('jsdoc', [...selected], onSelect);
     return (
         <div>
             <Checkbox
+                title="JSDoc"
+                helpText="JSDoc comments"
+                name="jsdoc"
+                onChange={toggleJSDoc}
+                isChecked={selected.includes('jsdoc')}
+                value={'checked'}
+                id="jsdoc"
+            >JSDoc</Checkbox>
+            <Checkbox
                 title="Localized"
-                helpText="Add types for localized fields and entries"
+                helpText="localized fields and entries"
                 name="localized"
                 onChange={toggleLocalized}
                 isChecked={selected.includes('localized')}

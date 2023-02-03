@@ -2,6 +2,8 @@ import {PageExtensionSDK} from '@contentful/app-sdk';
 import {CopyButton, GlobalStyles, IconButton, Paragraph, Typography} from '@contentful/f36-components';
 import {DownloadIcon} from "@contentful/f36-icons";
 import {Workbench} from '@contentful/f36-workbench';
+import {useCMA, useSDK} from "@contentful/react-apps-toolkit";
+import {useQuery} from "@tanstack/react-query";
 
 import {css} from "emotion";
 
@@ -11,12 +13,12 @@ import JSZip from 'jszip'
 import 'prism-themes/themes/prism-vs.css'
 import Prism from 'prismjs';
 import React, {useCallback, useEffect, useState} from 'react';
-import FilesNavigation from "./generator/FilesNavigation";
-import FlagsConfiguration from "./generator/FlagsConfiguration";
-import SidebarSection from "./generator/SidebarSection";
-import {Flag, useBuilder} from "./generator/useBuilder";
-import {useMultiFileContent} from "./generator/useMulitFileContent";
-import {useSingleFileContent} from "./generator/useSingleFileContent";
+import FilesNavigation from "../components/generator/FilesNavigation";
+import FlagsConfiguration from "../components/generator/FlagsConfiguration";
+import SidebarSection from "../components/generator/SidebarSection";
+import {Flag, useBuilder} from "../components/generator/useBuilder";
+import {useMultiFileContent} from "../components/generator/useMulitFileContent";
+import {useSingleFileContent} from "../components/generator/useSingleFileContent";
 
 require('prismjs/components/prism-typescript');
 
@@ -52,16 +54,30 @@ const styles = {
 
 const SINGLE_FILE_NAME = 'content-types.ts';
 
-interface PageProps {
-    sdk: PageExtensionSDK;
-}
 
-const Page: React.FC<PageProps> = ({sdk}) => {
+const Page: React.FC = () => {
+    const sdk = useSDK<PageExtensionSDK>();
+    const cma = useCMA();
     const [output, setOutput] = useState('')
     const [selectedFile, setSelectedFile] = useState<string | undefined>(SINGLE_FILE_NAME)
     const [flags, setFlags] = useState<Flag[]>([]);
 
-    const builder = useBuilder(sdk.space, flags)
+    const {data: contentTypesData} = useQuery({
+        queryKey: [sdk.ids.space, sdk.ids.environment, 'content-types'],
+        queryFn: () => cma.contentType.getMany({}),
+    })
+
+    const {data: userData} = useQuery({
+        queryKey: [sdk.ids.space, 'users'],
+        queryFn: () => cma.user.getManyForSpace({})
+    })
+
+    const builder = useBuilder({
+        contentTypes: contentTypesData?.items || [],
+        users: userData?.items || [],
+        flags,
+    })
+
     const files = useMultiFileContent(builder)
     const singleFileContent = useSingleFileContent(builder)
 
