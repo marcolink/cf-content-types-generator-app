@@ -1,5 +1,7 @@
 {
   "name": "cf-content-types-generator-app",
+  "author": "Marco Link<marcoxlink@gmail.com>",
+  "license": "MIT",
   "version": "0.1.2",
   "private": true,
   "dependencies": {
@@ -8,10 +10,12 @@
     "@contentful/f36-icons": "^4.24.0",
     "@contentful/f36-tokens": "^4.0.1",
     "@contentful/f36-workbench": "^4.21.0",
+    "@contentful/react-apps-toolkit": "^1.2.15",
+    "@tanstack/react-query": "^4.24.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
-    "cf-content-types-generator": "^2.5.0",
+    "cf-content-types-generator": "^2.6.0",
     "cross-env": "^7.0.3",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
