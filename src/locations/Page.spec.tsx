@@ -12,6 +12,6 @@ describe('Page component', () => {
     it('Component text exists', () => {
         const { getByText } = renderContainer(<Page />);
 
-        expect(getByText('Typescript - Content Types')).toBeInTheDocument();
+        expect(getByText('Content Types (TS) Generator')).toBeInTheDocument();
     });
 });
