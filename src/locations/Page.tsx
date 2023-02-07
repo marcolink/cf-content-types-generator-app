@@ -1,5 +1,5 @@
 import {PageExtensionSDK} from '@contentful/app-sdk';
-import {CopyButton, GlobalStyles, IconButton, Paragraph, Typography} from '@contentful/f36-components';
+import {CopyButton, GlobalStyles, IconButton, Paragraph, Spinner, Typography} from '@contentful/f36-components';
 import {DownloadIcon} from "@contentful/f36-icons";
 import {Workbench} from '@contentful/f36-workbench';
 import {useCMA, useSDK} from "@contentful/react-apps-toolkit";
@@ -48,7 +48,9 @@ const styles = {
     copyButton: css({
         float: 'right',
         marginBottom: '-20px',
-        marginLeft: '-1px'
+        marginLeft: '-1px',
+        borderTopLeftRadius : '0',
+        borderBottomLeftRadius : '0'
     })
 }
 
@@ -67,7 +69,10 @@ const Page: React.FC = () => {
         queryFn: () => cma.contentType.getMany({}),
     })
 
-    const {data: userData} = useQuery({
+    const {
+        data: userData,
+        isLoading: isLoadingUsers,
+    } = useQuery({
         queryKey: [sdk.ids.space, 'users'],
         queryFn: () => cma.user.getManyForSpace({})
     })
@@ -115,12 +120,16 @@ const Page: React.FC = () => {
             <GlobalStyles/>
             <Workbench>
                 <Workbench.Header
-                    title={'Typescript - Content Types'}
-                    description={'Generate TS types based on content types'}
+                    title={'Content Types (TS) Generator'}
+                    description={'Generate Typescript type definitions based on content types'}
                 />
                 <Workbench.Content type={"full"}>
-                    <CopyButton className={styles.copyButton} value={output}/>
-                    <pre><code className={'lang-typescript'}>{output}</code></pre>
+                    {isLoadingUsers ? <Spinner>Loading meta data</Spinner> :
+                        <>
+                            <CopyButton className={styles.copyButton} value={output}/>
+                            <pre><code className={'lang-typescript'}>{output}</code></pre>
+                        </>
+                    }
                 </Workbench.Content>
                 <Workbench.Sidebar position="right">
 
@@ -171,17 +180,29 @@ const Page: React.FC = () => {
                         </Typography>
                     </SidebarSection>
 
+                    <SidebarSection title={'Feedback'}>
+                        <Typography>
+                            <Paragraph>
+                                You have ideas on how to improve this tool or things are not working as expected? Please file a <a
+                                target={'_top'}
+                                href={'https://github.com/marcolink/cf-content-types-generator-app/issues'}>Github issue</a>!
+                            </Paragraph>
+                        </Typography>
+                    </SidebarSection>
+
                     <SidebarSection title={'Project Info'}>
                         <Typography>
+
+                            <Paragraph>
+                                <strong>Author:</strong> <a
+                                target={'_top'}
+                                href={'https://github.com/marcolink'}>Marco Link</a>
+                            </Paragraph>
+
                             <Paragraph>
                                 Use <a
                                 target={'_top'}
-                                href={'https://github.com/contentful-labs/cf-content-types-generator'}>CLI</a> version
-                                to
-                                integrate directly with your workflow.
-                            </Paragraph>
-                            <Paragraph>
-                                Version <code>{require('../../package.json').version}</code>
+                                href={'https://github.com/contentful-labs/cf-content-types-generator'}>CLI</a> to integrate directly with your workflow CI/CD.
                             </Paragraph>
                         </Typography>
                     </SidebarSection>
