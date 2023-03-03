@@ -3,13 +3,13 @@ import {
     CFDefinitionsBuilder,
     ContentTypeRenderer,
     DefaultContentTypeRenderer,
-    LocalizedContentTypeRenderer
+    LocalizedContentTypeRenderer, TypeGuardRenderer
 } from "cf-content-types-generator";
 import {UserProps} from "contentful-management/dist/typings/entities/user";
 import {useMemo} from "react";
 import {useJsDocRenderer} from "./useJsDocRenderer";
 
-export type Flag = 'localized' | 'jsdoc'
+export type Flag = 'localized' | 'jsdoc' | 'typeguard'
 
 type UseBuilderProps = {
     contentTypes: ContentType[]
@@ -25,6 +25,9 @@ export const useBuilder = ({contentTypes = [], flags = [], users = []}: UseBuild
         if (flags.includes('localized')) {
             renderers.push(new LocalizedContentTypeRenderer());
         }
+        if (flags.includes('typeguard')) {
+            renderers.push(new TypeGuardRenderer());
+        }
         if (flags.includes('jsdoc')) {
             renderers.push(jsDocRenderer);
         }
@@ -32,5 +35,6 @@ export const useBuilder = ({contentTypes = [], flags = [], users = []}: UseBuild
         // @ts-ignore
         builder.appendTypes(contentTypes)
         return builder;
-    }, [contentTypes, users, flags, jsDocRenderer])
+
+    }, [contentTypes, flags, jsDocRenderer])
 }

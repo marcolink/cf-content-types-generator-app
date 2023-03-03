@@ -22,6 +22,7 @@ const useFlagsToggle = (flag: Flag, selected: Flag[], onSelect: (flags: Flag[]) 
 const FlagsConfiguration: React.FC<Props> = ({onSelect, selected}) => {
     const toggleLocalized = useFlagsToggle('localized', [...selected], onSelect);
     const toggleJSDoc = useFlagsToggle('jsdoc', [...selected], onSelect);
+    const toggleTypeGuard = useFlagsToggle('typeguard', [...selected], onSelect);
     return (
         <div>
             <Checkbox
@@ -42,6 +43,15 @@ const FlagsConfiguration: React.FC<Props> = ({onSelect, selected}) => {
                 value={'checked'}
                 id="localized"
             >Localized</Checkbox>
+            <Checkbox
+                title="Type Guard"
+                helpText="type guard functions"
+                name="typeguard"
+                onChange={toggleTypeGuard}
+                isChecked={selected.includes('typeguard')}
+                value={'checked'}
+                id="typeguard"
+            >Type Guards</Checkbox>
         </div>
     );
 };
