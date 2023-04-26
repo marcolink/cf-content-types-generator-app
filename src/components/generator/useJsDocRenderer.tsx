@@ -5,6 +5,7 @@ import {
     defaultJsDocRenderOptions,
     JSDocRenderOptions
 } from "cf-content-types-generator/lib/renderer/type/js-doc-renderer";
+import {ContentTypeProps} from "contentful-management";
 import {UserProps} from "contentful-management/dist/typings/entities/user";
 import {useMemo} from "react";
 import {JSDocStructure, OptionalKind} from "ts-morph";
@@ -18,7 +19,7 @@ export function useJsDocRenderer({users}: UseJsDocRendererProps) {
 
     return useMemo(() => {
         const customRendererOptions: JSDocRenderOptions = {
-            renderFieldsDocs: defaultJsDocRenderOptions.renderFieldsDocs,
+            ...defaultJsDocRenderOptions,
             renderEntryDocs: ({contentType, name}) => {
                 // @ts-ignore
                 const jsDoc: OptionalKind<JSDocStructure> = defaultJsDocRenderOptions.renderEntryDocs({
@@ -39,6 +40,15 @@ export function useJsDocRenderer({users}: UseJsDocRendererProps) {
                     tagName: 'link',
                     text: `https://app.contentful.com/spaces/${space}/environments/${environment}/content_types/${contentType.sys.id}`
                 })
+
+                if (!!(contentType as ContentTypeProps).metadata?.annotations?.ContentType?.find(contentType => {
+                    return contentType.sys.id === "Contentful:ManagedByEnvironmentTemplate"
+                })) {
+                    jsDoc.tags?.push({
+                        tagName: 'external',
+                        text:  'Environment Template'
+                    })
+                }
 
                 return jsDoc;
             },
