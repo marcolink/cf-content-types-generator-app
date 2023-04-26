@@ -1,5 +1,13 @@
 import {PageExtensionSDK} from '@contentful/app-sdk';
-import {CopyButton, GlobalStyles, IconButton, Paragraph, Spinner, Typography} from '@contentful/f36-components';
+import {
+    Checkbox,
+    CopyButton,
+    GlobalStyles,
+    IconButton,
+    Paragraph,
+    Spinner,
+    Typography
+} from '@contentful/f36-components';
 import {DownloadIcon} from "@contentful/f36-icons";
 import {Workbench} from '@contentful/f36-workbench';
 import {useCMA, useSDK} from "@contentful/react-apps-toolkit";
@@ -64,6 +72,8 @@ const Page: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<string | undefined>(SINGLE_FILE_NAME)
     const [flags, setFlags] = useState<Flag[]>([]);
 
+    const [isV10, setIsV10] = useState(true)
+
     const {data: contentTypesData} = useQuery({
         queryKey: [sdk.ids.space, sdk.ids.environment, 'content-types'],
         queryFn: () => cma.contentType.getMany({}),
@@ -81,6 +91,7 @@ const Page: React.FC = () => {
         contentTypes: contentTypesData?.items || [],
         users: userData?.items || [],
         flags,
+        isV10
     })
 
     const files = useMultiFileContent(builder)
@@ -134,7 +145,18 @@ const Page: React.FC = () => {
                 <Workbench.Sidebar position="right">
 
                     <SidebarSection title={'Config'} isNew={true}>
-                        <FlagsConfiguration onSelect={setFlags} selected={flags}/>
+
+                        <Checkbox
+                            title="V10"
+                            helpText="contentful@v10"
+                            name="contentful@10"
+                            onChange={() => setIsV10((value) => !value)}
+                            isChecked={isV10}
+                            value={'checked'}
+                            id="v10"
+                        >v10</Checkbox>
+
+                        <FlagsConfiguration onSelect={setFlags} selected={flags} isV10={isV10}/>
                     </SidebarSection>
 
                     <SidebarSection title={'single File'}>

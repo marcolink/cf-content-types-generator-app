@@ -3,8 +3,10 @@ import {
     CFDefinitionsBuilder,
     ContentTypeRenderer,
     DefaultContentTypeRenderer,
-    LocalizedContentTypeRenderer, TypeGuardRenderer
+    LocalizedContentTypeRenderer, TypeGuardRenderer, V10ContentTypeRenderer
 } from "cf-content-types-generator";
+import {V10TypeGuardRenderer} from "cf-content-types-generator/lib/renderer/type/v10-type-guard-renderer";
+
 import {UserProps} from "contentful-management/dist/typings/entities/user";
 import {useMemo} from "react";
 import {useJsDocRenderer} from "./useJsDocRenderer";
@@ -14,19 +16,20 @@ export type Flag = 'localized' | 'jsdoc' | 'typeguard'
 type UseBuilderProps = {
     contentTypes: ContentType[]
     flags: Flag[]
-    users: UserProps[]
+    users: UserProps[],
+    isV10: boolean
 }
 
-export const useBuilder = ({contentTypes = [], flags = [], users = []}: UseBuilderProps) => {
+export const useBuilder = ({contentTypes = [], flags = [], users = [], isV10 = false}: UseBuilderProps) => {
     const jsDocRenderer = useJsDocRenderer({users})
 
     return useMemo(() => {
-        const renderers: ContentTypeRenderer[] = [new DefaultContentTypeRenderer()];
-        if (flags.includes('localized')) {
+        const renderers: ContentTypeRenderer[] = [isV10 ? new V10ContentTypeRenderer() : new DefaultContentTypeRenderer()];
+        if (flags.includes('localized') && !isV10) {
             renderers.push(new LocalizedContentTypeRenderer());
         }
         if (flags.includes('typeguard')) {
-            renderers.push(new TypeGuardRenderer());
+            renderers.push(isV10 ? new V10TypeGuardRenderer() : new TypeGuardRenderer());
         }
         if (flags.includes('jsdoc')) {
             renderers.push(jsDocRenderer);
@@ -36,5 +39,5 @@ export const useBuilder = ({contentTypes = [], flags = [], users = []}: UseBuild
         builder.appendTypes(contentTypes)
         return builder;
 
-    }, [contentTypes, flags, jsDocRenderer])
+    }, [contentTypes, flags, jsDocRenderer, isV10])
 }
