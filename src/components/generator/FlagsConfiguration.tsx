@@ -5,7 +5,8 @@ import {Flag} from "./useBuilder";
 
 type Props = {
     onSelect: (flags: Flag[]) => void;
-    selected: Flag[]
+    selected: Flag[],
+    isV10: boolean
 };
 
 const useFlagsToggle = (flag: Flag, selected: Flag[], onSelect: (flags: Flag[]) => void) => {
@@ -19,7 +20,7 @@ const useFlagsToggle = (flag: Flag, selected: Flag[], onSelect: (flags: Flag[]) 
     }
 }
 
-const FlagsConfiguration: React.FC<Props> = ({onSelect, selected}) => {
+const FlagsConfiguration: React.FC<Props> = ({onSelect, selected, isV10}) => {
     const toggleLocalized = useFlagsToggle('localized', [...selected], onSelect);
     const toggleJSDoc = useFlagsToggle('jsdoc', [...selected], onSelect);
     const toggleTypeGuard = useFlagsToggle('typeguard', [...selected], onSelect);
@@ -39,7 +40,8 @@ const FlagsConfiguration: React.FC<Props> = ({onSelect, selected}) => {
                 helpText="localized fields and entries"
                 name="localized"
                 onChange={toggleLocalized}
-                isChecked={selected.includes('localized')}
+                isChecked={isV10 || selected.includes('localized')}
+                isDisabled={isV10}
                 value={'checked'}
                 id="localized"
             >Localized</Checkbox>
