@@ -6,7 +6,7 @@
   "private": true,
   "dependencies": {
     "@contentful/app-sdk": "^4.17.0",
-    "@contentful/f36-components": "^4.34.0",
+    "@contentful/f36-components": "^4.37.1",
     "@contentful/f36-icons": "^4.25.0",
     "@contentful/f36-tokens": "^4.0.1",
     "@contentful/f36-workbench": "^4.21.0",
