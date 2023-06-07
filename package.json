@@ -8,7 +8,7 @@
     "@contentful/app-sdk": "^4.17.2",
     "@contentful/f36-components": "^4.41.1",
     "@contentful/f36-icons": "^4.25.0",
-    "@contentful/f36-tokens": "^4.0.1",
+    "@contentful/f36-tokens": "^4.0.2",
     "@contentful/f36-workbench": "^4.21.0",
     "@contentful/react-apps-toolkit": "^1.2.15",
     "@tanstack/react-query": "^4.29.7",
