@@ -5,7 +5,7 @@
   "version": "0.1.2",
   "private": true,
   "dependencies": {
-    "@contentful/app-sdk": "^4.19.1",
+    "@contentful/app-sdk": "^4.21.0",
     "@contentful/f36-components": "^4.44.0",
     "@contentful/f36-icons": "^4.25.0",
     "@contentful/f36-tokens": "^4.0.1",
