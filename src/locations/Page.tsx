@@ -217,13 +217,15 @@ const Page: React.FC = () => {
 
                             <Paragraph>
                                 <strong>Author:</strong> <a
+                                rel="noopener noreferrer"
                                 target={'_top'}
                                 href={'https://github.com/marcolink'}>Marco Link</a>
                             </Paragraph>
 
                             <Paragraph>
                                 Use <a
-                                target={'_top'}
+                                rel="noopener noreferrer"
+                                target={'_blank'}
                                 href={'https://github.com/contentful-labs/cf-content-types-generator'}>CLI</a> to integrate directly with your workflow CI/CD.
                             </Paragraph>
                         </Typography>
