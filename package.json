@@ -55,7 +55,7 @@
     "@types/lodash": "^4.14.198",
     "@types/node": "^14.14.27",
     "@types/prismjs": "^1.26.0",
-    "@types/react": "^18.2.21",
+    "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
     "contentful-management": "^10.45.0"
   }
