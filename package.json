@@ -57,6 +57,6 @@
     "@types/prismjs": "^1.26.1",
     "@types/react": "^18.2.29",
     "@types/react-dom": "^18.2.14",
-    "contentful-management": "^11.1.1"
+    "contentful-management": "^11.2.0"
   }
 }
