@@ -10,8 +10,9 @@ import {V10TypeGuardRenderer} from "cf-content-types-generator/lib/renderer/type
 import {UserProps} from "contentful-management/dist/typings/entities/user";
 import {useMemo} from "react";
 import {useJsDocRenderer} from "./useJsDocRenderer";
+import {ResponseTypeRenderer} from "cf-content-types-generator/lib/renderer/type/response-type-renderer";
 
-export type Flag = 'localized' | 'jsdoc' | 'typeguard'
+export type Flag = 'localized' | 'jsdoc' | 'typeguard' | 'response-types'
 
 type UseBuilderProps = {
     contentTypes: ContentType[]
@@ -33,6 +34,9 @@ export const useBuilder = ({contentTypes = [], flags = [], users = [], isV10 = f
         }
         if (flags.includes('jsdoc')) {
             renderers.push(jsDocRenderer);
+        }
+        if (isV10 && flags.includes('response-types')) {
+            renderers.push(new ResponseTypeRenderer());
         }
         const builder = new CFDefinitionsBuilder(renderers)
         // @ts-ignore

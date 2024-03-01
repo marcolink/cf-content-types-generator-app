@@ -1,4 +1,4 @@
-import {Checkbox} from "@contentful/f36-components";
+import {Badge, Checkbox} from "@contentful/f36-components";
 import {pullAt} from "lodash";
 import * as React from "react";
 import {Flag} from "./useBuilder";
@@ -24,6 +24,7 @@ const FlagsConfiguration: React.FC<Props> = ({onSelect, selected, isV10}) => {
     const toggleLocalized = useFlagsToggle('localized', [...selected], onSelect);
     const toggleJSDoc = useFlagsToggle('jsdoc', [...selected], onSelect);
     const toggleTypeGuard = useFlagsToggle('typeguard', [...selected], onSelect);
+    const toggleResponseTypes = useFlagsToggle('response-types', [...selected], onSelect);
     return (
         <div>
             <Checkbox
@@ -54,6 +55,16 @@ const FlagsConfiguration: React.FC<Props> = ({onSelect, selected, isV10}) => {
                 value={'checked'}
                 id="typeguard"
             >Type Guards</Checkbox>
+          <Checkbox
+            isDisabled={!isV10}
+            title="Response Types"
+            helpText="Chain modifiers response types"
+            name="response-types"
+            onChange={toggleResponseTypes}
+            isChecked={isV10 && selected.includes('response-types')}
+            value={'checked'}
+            id="response-types"
+          >Response Types <Badge size={'small'}>new</Badge></Checkbox>
         </div>
     );
 };
