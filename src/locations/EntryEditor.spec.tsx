@@ -1,17 +1,17 @@
-import React from 'react';
-import {mockCma, mockSdk} from '../../test/mocks';
-import {renderContainer} from "../../test/renderContainer";
+import { render } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import { mockCma, mockSdk } from '../../test/mocks';
 import EntryEditor from './EntryEditor';
 
-jest.mock('@contentful/react-apps-toolkit', () => ({
+vi.mock('@contentful/react-apps-toolkit', () => ({
     useSDK: () => mockSdk,
     useCMA: () => mockCma,
 }));
 
 describe('Entry component', () => {
     it('Component text exists', () => {
-        const {getByText} = renderContainer(<EntryEditor/>);
+        const { getByText } = render(<EntryEditor />);
 
-        expect(getByText('Hello Entry Editor Component (AppId: test-app)')).toBeInTheDocument();
+        expect(getByText('Hello Entry Editor Component (AppId: test-app)')).toBeTruthy();
     });
 });
