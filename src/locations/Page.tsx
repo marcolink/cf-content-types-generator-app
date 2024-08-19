@@ -24,7 +24,7 @@ import {Flag, useBuilder} from "../components/generator/useBuilder";
 import {useMultiFileContent} from "../components/generator/useMulitFileContent";
 import {useSingleFileContent} from "../components/generator/useSingleFileContent";
 import {PageAppSDK} from "@contentful/app-sdk";
-import {codeToHtml, createHighlighter} from "shiki";
+import {createHighlighter} from "shiki";
 
 const styles = {
   sidebarHeadline: css({
