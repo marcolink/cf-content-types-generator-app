@@ -16,9 +16,6 @@ import {css} from "emotion";
 
 import {saveAs} from 'file-saver';
 import JSZip from 'jszip'
-// import 'prismjs/themes/prism.css'
-import 'prism-themes/themes/prism-vs.css'
-import Prism from 'prismjs';
 import React, {useCallback, useEffect, useState} from 'react';
 import FilesNavigation from "../components/generator/FilesNavigation";
 import FlagsConfiguration from "../components/generator/FlagsConfiguration";
@@ -27,9 +24,7 @@ import {Flag, useBuilder} from "../components/generator/useBuilder";
 import {useMultiFileContent} from "../components/generator/useMulitFileContent";
 import {useSingleFileContent} from "../components/generator/useSingleFileContent";
 import {PageAppSDK} from "@contentful/app-sdk";
-
-// @ts-ignore
-import prismjs from "prismjs/components/prism-typescript";
+import {codeToHtml, createHighlighter} from "shiki";
 
 const styles = {
   sidebarHeadline: css({
@@ -64,7 +59,7 @@ const styles = {
 }
 
 const SINGLE_FILE_NAME = 'content-types.ts';
-
+const THEME = "github-light"
 
 const Page: React.FC = () => {
   const sdk = useSDK<PageAppSDK>();
@@ -109,8 +104,15 @@ const Page: React.FC = () => {
     }
   }, [setOutput, selectedFile, files, singleFileContent])
 
-  useEffect(() => {
-    Prism.highlightAll();
+
+  const {data: highlighter, isLoading: IsLoadingHighlighter} = useQuery({
+    queryKey: ['highlighter'],
+    queryFn: async () => {
+      return createHighlighter({
+        themes: [THEME],
+        langs: ['typescript'],
+      })
+    },
   })
 
   const createZip = useCallback(async () => {
@@ -136,10 +138,14 @@ const Page: React.FC = () => {
           description={'Generate Typescript type definitions based on content types'}
         />
         <Workbench.Content type={"full"}>
-          {isLoadingUsers ? <Spinner>Loading meta data</Spinner> :
+          {(isLoadingUsers || IsLoadingHighlighter) ? <Spinner>Loading meta data</Spinner> :
             <>
               <CopyButton className={styles.copyButton} value={output}/>
-              <pre><code className={'lang-typescript'}>{output}</code></pre>
+              <div dangerouslySetInnerHTML={{__html: highlighter!.codeToHtml(output, {
+                  lang: 'typescript',
+                  theme: THEME
+                })}}>
+              </div>
             </>
           }
         </Workbench.Content>
