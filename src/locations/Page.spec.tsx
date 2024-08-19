@@ -1,17 +1,16 @@
-import React from 'react';
-import {renderContainer} from "../../test/renderContainer";
+import {describe, expect, it, vi} from 'vitest';
+import {mockCma, mockSdk} from '../../test/mocks';
 import Page from './Page';
-import { mockCma, mockSdk } from '../../test/mocks';
+import {renderContainer} from "../../test/renderContainer";
 
-jest.mock('@contentful/react-apps-toolkit', () => ({
-    useSDK: () => mockSdk,
-    useCMA: () => mockCma,
+vi.mock('@contentful/react-apps-toolkit', () => ({
+  useSDK: () => mockSdk,
+  useCMA: () => mockCma,
 }));
 
 describe('Page component', () => {
-    it('Component text exists', () => {
-        const { getByText } = renderContainer(<Page />);
-
-        expect(getByText('Content Types (TS) Generator')).toBeInTheDocument();
-    });
+  it('Component text exists', () => {
+    const {getByText} = renderContainer(<Page/>);
+    expect(getByText('Content Types (TS) Generator')).toBeTruthy();
+  });
 });
