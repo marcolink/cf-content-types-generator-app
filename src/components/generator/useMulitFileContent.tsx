@@ -1,4 +1,4 @@
-import CFDefinitionsBuilder from "cf-content-types-generator/lib/cf-definitions-builder";
+import {CFDefinitionsBuilder} from "cf-content-types-generator";
 import {useEffect, useState} from "react";
 import {FileStore} from "../../types";
 
