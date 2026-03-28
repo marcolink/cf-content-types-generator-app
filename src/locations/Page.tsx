@@ -9,7 +9,7 @@ import {
 } from '@contentful/f36-components';
 import {DownloadIcon} from "@contentful/f36-icons";
 import {Workbench} from '@contentful/f36-workbench';
-import {useCMA, useSDK} from "@contentful/react-apps-toolkit";
+import {useSDK} from "@contentful/react-apps-toolkit";
 import {useQuery} from "@tanstack/react-query";
 
 import {css} from "emotion";
@@ -63,12 +63,10 @@ const THEME = "github-light"
 
 const Page: React.FC = () => {
   const sdk = useSDK<PageAppSDK>();
-  const cma = useCMA();
+  const cma = sdk.cma;
   const [output, setOutput] = useState('')
   const [selectedFile, setSelectedFile] = useState<string | undefined>(SINGLE_FILE_NAME)
   const [flags, setFlags] = useState<Flag[]>([]);
-
-  const [isV10, setIsV10] = useState(true)
 
   const {data: contentTypesData} = useQuery({
     queryKey: [sdk.ids.space, sdk.ids.environment, 'content-types'],
@@ -86,8 +84,7 @@ const Page: React.FC = () => {
   const builder = useBuilder({
     contentTypes: contentTypesData?.items || [],
     users: userData?.items || [],
-    flags,
-    isV10
+    flags
   })
 
   const files = useMultiFileContent(builder)
@@ -152,18 +149,7 @@ const Page: React.FC = () => {
         <Workbench.Sidebar position="right">
 
           <SidebarSection title={'Config'} isNew={true}>
-
-            <Checkbox
-              title="V10"
-              helpText="contentful@v10"
-              name="contentful@10"
-              onChange={() => setIsV10((value) => !value)}
-              isChecked={isV10}
-              value={'checked'}
-              id="v10"
-            >v10</Checkbox>
-
-            <FlagsConfiguration onSelect={setFlags} selected={flags} isV10={isV10}/>
+            <FlagsConfiguration onSelect={setFlags} selected={flags}/>
           </SidebarSection>
 
           <SidebarSection title={'single File'}>

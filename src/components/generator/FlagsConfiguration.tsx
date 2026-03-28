@@ -6,7 +6,6 @@ import {Flag} from "./useBuilder";
 type Props = {
     onSelect: (flags: Flag[]) => void;
     selected: Flag[],
-    isV10: boolean
 };
 
 const useFlagsToggle = (flag: Flag, selected: Flag[], onSelect: (flags: Flag[]) => void) => {
@@ -20,7 +19,7 @@ const useFlagsToggle = (flag: Flag, selected: Flag[], onSelect: (flags: Flag[]) 
     }
 }
 
-const FlagsConfiguration: React.FC<Props> = ({onSelect, selected, isV10}) => {
+const FlagsConfiguration: React.FC<Props> = ({onSelect, selected}) => {
     const toggleLocalized = useFlagsToggle('localized', [...selected], onSelect);
     const toggleJSDoc = useFlagsToggle('jsdoc', [...selected], onSelect);
     const toggleTypeGuard = useFlagsToggle('typeguard', [...selected], onSelect);
@@ -41,8 +40,8 @@ const FlagsConfiguration: React.FC<Props> = ({onSelect, selected, isV10}) => {
                 helpText="localized fields and entries"
                 name="localized"
                 onChange={toggleLocalized}
-                isChecked={isV10 || selected.includes('localized')}
-                isDisabled={isV10}
+                isChecked
+                isDisabled
                 value={'checked'}
                 id="localized"
             >Localized</Checkbox>
@@ -56,12 +55,11 @@ const FlagsConfiguration: React.FC<Props> = ({onSelect, selected, isV10}) => {
                 id="typeguard"
             >Type Guards</Checkbox>
           <Checkbox
-            isDisabled={!isV10}
             title="Response Types"
             helpText="Chain modifiers response types"
             name="response-types"
             onChange={toggleResponseTypes}
-            isChecked={isV10 && selected.includes('response-types')}
+            isChecked={selected.includes('response-types')}
             value={'checked'}
             id="response-types"
           >Response Types <Badge size={'small'}>new</Badge></Checkbox>
